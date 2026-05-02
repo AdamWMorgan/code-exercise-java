@@ -2,6 +2,7 @@ package com.amorgan.urlshortener.service;
 
 import com.amorgan.urlshortener.dto.ShortenPostRequest;
 import com.amorgan.urlshortener.dto.UrlsGet200ResponseInner;
+import com.amorgan.urlshortener.exception.AliasNotFoundException;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public interface UrlShortenerService {
      *
      * @param alias The shortened identifier.
      * @return The original full URL.
+     * @throws AliasNotFoundException if the provided alias does not exist in the database.
      */
     String getFullUrl(final String alias);
 

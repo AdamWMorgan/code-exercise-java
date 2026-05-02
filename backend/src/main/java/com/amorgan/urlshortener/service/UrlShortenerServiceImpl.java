@@ -2,6 +2,7 @@ package com.amorgan.urlshortener.service;
 
 import com.amorgan.urlshortener.dto.ShortenPostRequest;
 import com.amorgan.urlshortener.dto.UrlsGet200ResponseInner;
+import com.amorgan.urlshortener.exception.AliasNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +30,11 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
 
     @Override
     public String getFullUrl(final String alias) {
-        return "https://google.com";
+        if ("google".equals(alias)) {
+            return "https://google.com";
+        }
+
+        throw new AliasNotFoundException(alias);
     }
 
     @Override
