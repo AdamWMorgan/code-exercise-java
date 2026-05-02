@@ -6,13 +6,15 @@ import com.amorgan.urlshortener.api.UrlsApi;
 import com.amorgan.urlshortener.dto.ShortenPost201Response;
 import com.amorgan.urlshortener.dto.ShortenPostRequest;
 import com.amorgan.urlshortener.dto.UrlsGet200ResponseInner;
+import com.amorgan.urlshortener.service.UrlShortenerService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,11 +23,15 @@ import java.util.Optional;
  * <p>
  * This controller implements the interfaces generated from the OpenAPI specification,
  * providing endpoints to create, retrieve, list, and delete shortened URLs.
+ * </p>
  *
  * @author adam.morgan
  */
 @RestController
+@RequiredArgsConstructor
 public class UrlShortenerController implements ShortenApi, UrlsApi, AliasApi {
+
+    private final UrlShortenerService urlShortenerService;
 
     /**
      * Provides access to the current native web request.
@@ -45,9 +51,12 @@ public class UrlShortenerController implements ShortenApi, UrlsApi, AliasApi {
      * @return a {@link ResponseEntity} containing the shortened URL and HTTP 201 status.
      */
     @Override
-    public ResponseEntity<ShortenPost201Response> shortenPost(final ShortenPostRequest shortenPostRequest) {
+    public ResponseEntity<ShortenPost201Response> shortenPost(@Valid final ShortenPostRequest shortenPostRequest) {
+        final String alias = urlShortenerService.shortenUrl(shortenPostRequest);
+
         final ShortenPost201Response response = new ShortenPost201Response()
-                .shortUrl("http://stub");
+                .shortUrl("http://" + alias);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -59,8 +68,10 @@ public class UrlShortenerController implements ShortenApi, UrlsApi, AliasApi {
      */
     @Override
     public ResponseEntity<Void> aliasGet(final String alias) {
+        final String fullUrl = urlShortenerService.getFullUrl(alias);
+
         return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create("https://google.com"))
+                .location(URI.create(fullUrl))
                 .build();
     }
 
@@ -72,6 +83,7 @@ public class UrlShortenerController implements ShortenApi, UrlsApi, AliasApi {
      */
     @Override
     public ResponseEntity<Void> aliasDelete(final String alias) {
+        urlShortenerService.deleteAlias(alias);
         return ResponseEntity.noContent().build();
     }
 
@@ -82,6 +94,7 @@ public class UrlShortenerController implements ShortenApi, UrlsApi, AliasApi {
      */
     @Override
     public ResponseEntity<List<UrlsGet200ResponseInner>> urlsGet() {
-        return ResponseEntity.ok(new ArrayList<>());
+        final List<UrlsGet200ResponseInner> urls = urlShortenerService.getAllUrls();
+        return ResponseEntity.ok(urls);
     }
 }
