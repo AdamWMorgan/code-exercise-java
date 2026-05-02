@@ -6,8 +6,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.time.OffsetDateTime;
-
+import java.time.LocalDateTime;
 /**
  * GlobalExceptionHandler.
  * <p>
@@ -24,7 +23,7 @@ public final class GlobalExceptionHandler {
         final HttpStatus status = HttpStatus.NOT_FOUND;
 
         final ErrorResponse errorResponse = new ErrorResponse(
-                OffsetDateTime.now(),
+                LocalDateTime.now(),
                 status.value(),
                 status.getReasonPhrase(),
                 ex.getMessage()
@@ -38,7 +37,7 @@ public final class GlobalExceptionHandler {
         final HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         final ErrorResponse errorResponse = new ErrorResponse(
-                OffsetDateTime.now(),
+                LocalDateTime.now(),
                 status.value(),
                 status.getReasonPhrase(),
                 "An unexpected error occurred"
@@ -52,7 +51,7 @@ public final class GlobalExceptionHandler {
         final HttpStatus status = HttpStatus.BAD_REQUEST;
 
         final ErrorResponse errorResponse = new ErrorResponse(
-                OffsetDateTime.now(),
+                LocalDateTime.now(),
                 status.value(),
                 status.getReasonPhrase(),
                 "Malformed JSON request"

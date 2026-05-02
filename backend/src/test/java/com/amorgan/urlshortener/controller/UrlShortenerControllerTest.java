@@ -40,19 +40,19 @@ class UrlShortenerControllerTest {
     private UrlShortenerService urlShortenerService;
 
     @Test
-    @DisplayName("Performing a POST to the /shorten endpoint should return 201 and correctly formatted short URL")
+    @DisplayName("Performing a POST to the /shorten endpoint should return 201 and the short URL from the service")
     void testShortenPostReturns201AndCorrectUrl() throws Exception {
-        final String mockAlias = "custom-alias";
+        final String mockShortUrl = "https://custom-alias";
         final ShortenPostRequest request = new ShortenPostRequest();
         request.setFullUrl("https://some-long-test-url.com/path");
 
-        when(urlShortenerService.shortenUrl(any(ShortenPostRequest.class))).thenReturn(mockAlias);
+        when(urlShortenerService.shortenUrl(any(ShortenPostRequest.class))).thenReturn(mockShortUrl);
 
         mockMvc.perform(post("/shorten")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.shortUrl").value("http://" + mockAlias));
+                .andExpect(jsonPath("$.shortUrl").value(mockShortUrl));
 
         verify(urlShortenerService, times(1)).shortenUrl(any(ShortenPostRequest.class));
     }

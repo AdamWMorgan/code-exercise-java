@@ -52,10 +52,10 @@ public class UrlShortenerController implements ShortenApi, UrlsApi, AliasApi {
      */
     @Override
     public ResponseEntity<ShortenPost201Response> shortenPost(@Valid final ShortenPostRequest shortenPostRequest) {
-        final String alias = urlShortenerService.shortenUrl(shortenPostRequest);
+        final String shortUrl = urlShortenerService.shortenUrl(shortenPostRequest);
 
         final ShortenPost201Response response = new ShortenPost201Response()
-                .shortUrl("http://" + alias);
+                .shortUrl(shortUrl);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

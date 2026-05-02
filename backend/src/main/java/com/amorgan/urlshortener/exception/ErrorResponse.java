@@ -1,6 +1,6 @@
 package com.amorgan.urlshortener.exception;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 /**
  * ErrorResponse
@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
  * @author adam.morgan
  */
 public record ErrorResponse(
-        OffsetDateTime timestamp,
+        LocalDateTime timestamp,
         int status,
         String error,
         String message
