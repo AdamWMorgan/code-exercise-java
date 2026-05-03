@@ -1,5 +1,7 @@
 # URL Shortener Coding Exercise
 
+<img width="952" height="646" alt="image" src="https://github.com/user-attachments/assets/0e1426d5-f46d-49d1-8466-43b9a1c07d76" />
+
 ## Project Implementation
 
 This project was created using Java 21 on the backend and React for the frontend UI, making use of MaterialUI for faster
@@ -16,16 +18,28 @@ Testing for the backend was implemented using Junit, Mockito and the Spring fram
 Integration test, in their own module, were implemented using the Cucumber framework alongside Junit. Features were written
 in Gherkin.
 
+UTs
+<img width="961" height="170" alt="image" src="https://github.com/user-attachments/assets/f153fd59-d019-44f8-bf61-c8842ad100c2" />
+<br>
+ITs
+<img width="374" height="194" alt="image" src="https://github.com/user-attachments/assets/e2ade916-dd7d-4eb9-9e6f-7cf947c94a31" />
+<br>
 Frontend testing was achieved using Jest.
 
-## Run Project
+<img width="386" height="221" alt="image" src="https://github.com/user-attachments/assets/104e71c8-6dc8-4ee3-91c0-31de95b45bd1" />
 
-To run the project, you simply need to execute the 'docker-compose up' command from the root directory. This will spin up the following:
+
+## Build & Run Project
+
+To build and run the project, you simply need to execute the 'docker-compose up --build' command from the root directory. This will spin up the following:
 
 - Backend API: http://localhost:8080/
 - Frontend UI: http://localhost:3000/
-- MongoDB: mongodb://mongodb:27017/urlshortener
-
+- MongoDB (Internal): mongodb://mongodb:27017/urlshortener
+- MongoDB (External/Local): mongodb://localhost:27017
+<br>
+<img width="1353" height="195" alt="image" src="https://github.com/user-attachments/assets/7b969bb4-fc0e-4d8b-b6e4-006167dec3ad" />
+<br>
 To prevent data loss between sessions, a Docker volume is mapped to the MongoDB data directory.
 
 ## Issues Faced
