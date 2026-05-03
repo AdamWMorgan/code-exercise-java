@@ -1,44 +1,48 @@
 # URL Shortener Coding Exercise
 
-## Task
+## Project Implementation
 
-Build a simple **URL shortener** in a **preferably JVM-based language** (e.g. Java, Kotlin).
+This project was created using Java 21 on the backend and React for the frontend UI, making use of MaterialUI for faster
+implementation of the layout.
 
-It should:
+The pre-existing openapi.yaml is used during the build stage to automatically generate the DTOs and API interfaces.**The 
+auto-generation of the objects meant that the context path was used for the objects, i.e. ShortenPost201Response, instead
+of a more concise name, however I made an assumption that if you were working to a 3rd party spec and this is what was
+provided, you would need to develop against the source of truth.**
 
-- Accept a full URL and return a shortened URL.
-- A shortened URL should have a randomly generated alias.
-- Allow a user to **customise the shortened URL** if they want to (e.g. user provides `my-custom-alias` instead of a random string).
-- Persist the shortened URLs across restarts.
-- Expose a **decoupled web frontend** built with a modern framework (e.g., React, Next.js, Vue.js, Angular, Flask with templates). This can be lightweight form/output just to demonstrate interaction with the API. Feel free to use UI frameworks like Bootstrap, Material-UI, Tailwind CSS, GOV.UK design system, etc. to speed up development.
-- Expose a **RESTful API** to perform create/read/delete operations on URLs.  
-  → Refer to the provided [`openapi.yaml`](./openapi.yaml) for API structure and expected behaviour.
-- Include the ability to **delete a shortened URL** via the API.
-- **Have tests**.
-- Be containerised (e.g. Docker).
-- Include instructions for running locally.
+## Project Testing
 
-## Rules
+Testing for the backend was implemented using Junit, Mockito and the Spring framework's MockMVC for Spring based requests.
+Integration test, in their own module, were implemented using the Cucumber framework alongside Junit. Features were written
+in Gherkin.
 
-- Fork the repository and work in your fork. Do not push directly to the main repository.
-- There is no time limit, we want to see something you are proud of. We would like to understand roughly how long you spent on it though.
-- **Commit often with meaningful messages.**
-- Write tests.
-- The API should validate inputs and handle errors gracefully.
-- The Frontend should show errors from the API appropriately.
-- Use the provided [`openapi.yaml`](./openapi.yaml) as the API contract.
-- Focus on clean, maintainable code.
-- AI tools (e.g., GitHub Copilot, ChatGPT) are allowed, but please **do not** copy-paste large chunks of code. Use them as assistants, not as a replacement for your own work. We will be asking.
+Frontend testing was achieved using Jest.
 
-## Deliverables
+## Run Project
 
-- Working software.
-- Decoupled web frontend (using a modern framework like React, Next.js, Vue.js, Angular, or Flask with templates).
-- RESTful API matching the OpenAPI spec.
-- Tests.
-- A git commit history that shows your thought process.
-- Dockerfile.
-- README with:
-  - How to build and run locally.
-  - Example usage (frontend and API).
-  - Any notes or assumptions.
+To run the project, you simply need to execute the 'docker-compose up' command from the root directory. This will spin up the following:
+
+- Backend API: http://localhost:8080/
+- Frontend UI: http://localhost:3000/
+- MongoDB: mongodb://mongodb:27017/urlshortener
+
+To prevent data loss between sessions, a Docker volume is mapped to the MongoDB data directory.
+
+## Issues Faced
+
+- OpenAPI contract naming, previously mentioned.
+- Reverted to using Flapdoodle's embedded MongoDB to overcome some challenges faced when using Testcontainers. I'd 
+initially implemented the Testcontainers approach to stick with the overall usage of Docker, however it was proving 
+difficult due to some network issues with my Docker settings that was becoming a bit of a time sink to solve. 
+
+
+## Productionisation Considerations
+
+A production grade version of this app would require (non-exhaustive) the following:
+- User authentication, with history linked to specific users (which would also help filter on single user history when querying).
+- Rate limiting to avoid spamming of endpoints for malicious purposes.
+- Caching of URLs to avoid unnecessary calls to DB.
+- Improved logging and monitoring.
+- Database indexing as the data eventually grows to a huge number.
+- Concurrency would be ideal here since this is I/O heavy. This project is using Java 21, so it would be quite straightforwards
+to enable virtual threads.
