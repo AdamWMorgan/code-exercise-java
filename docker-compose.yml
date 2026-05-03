@@ -25,6 +25,21 @@ services:
     networks:
       - url-shortener-net
 
+  frontend:
+    platform: linux/amd64
+    build:
+      context: ./frontend/url-shortener-ui
+      dockerfile: ../Dockerfile
+    container_name: url-shortener-frontend
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+    networks:
+      - url-shortener-net
+
 volumes:
   mongo-data:
 
