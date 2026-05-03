@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: url-shortener-test
+
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: url_shortener_test
+      auto-index-creation: true
+      server-selection-timeout: 10000ms
+
+  app:
+    short-url:
+      base-path: http://localhost:8080/

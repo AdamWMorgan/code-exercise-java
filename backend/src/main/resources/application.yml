@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: url-shortener-backend
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/urlshortener
+      auto-index-creation: true
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+app:
+  short-url:
+    base-path: http://localhost:8080/
+
+logging:
+  level:
+    root: INFO
+    com.amorgan.urlshortener: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
